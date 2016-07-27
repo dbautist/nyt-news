@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">NYTNews</string>
+  <string name="title_activity_content_search">ContentSearchActivity</string>
 </resources>
