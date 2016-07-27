@@ -1,12 +1,19 @@
 package com.codepath.nytnews.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -24,14 +31,11 @@ import butterknife.OnClick;
 
 public class SearchActivity extends AppCompatActivity {
   private static final String TAG = SearchActivity.class.getSimpleName();
-  @BindView(R.id.searchButton)
-  Button searchButton;
-  @BindView(R.id.queryTextView)
-  TextView queryTextView;
   @BindView(R.id.articleGridView)
   GridView articleGridView;
 
-  @NonNull private ArticleClient mClient;
+  @NonNull
+  private ArticleClient mClient;
   private ArticleArrayAdapter mAdapter;
   private ArrayList<Article> mArticleList;
 
@@ -52,8 +56,6 @@ public class SearchActivity extends AppCompatActivity {
     mAdapter = new ArticleArrayAdapter(this, mArticleList);
     articleGridView.setAdapter(mAdapter);
     mClient = new ArticleClient();
-
-    getArticleList("");
   }
 
   private void getArticleList(@NonNull String query) {
@@ -73,9 +75,46 @@ public class SearchActivity extends AppCompatActivity {
     });
   }
 
-  @OnClick(R.id.searchButton)
-  public void search(View view) {
-    String queryText = queryTextView.getText().toString();
-    getArticleList(queryText);
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_search, menu);
+
+    MenuItem searchItem = menu.findItem(R.id.action_search);
+    final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        // clear the list; it's a new search
+        mArticleList.clear();
+        mAdapter.notifyDataSetChanged();
+
+        // perform query here
+        getArticleList(query);
+
+        // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+        // see https://code.google.com/p/android/issues/detail?id=24599
+        searchView.clearFocus();
+
+        return true;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        return false;
+      }
+    });
+
+    // Expand the search view and request focus
+    searchItem.expandActionView();
+    searchView.requestFocus();
+
+    // Customize searchview text and hint colors
+    int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
+    EditText et = (EditText) searchView.findViewById(searchEditId);
+    et.setTextColor(Color.WHITE);
+    et.setHintTextColor(Color.WHITE);
+
+    return super.onCreateOptionsMenu(menu);
   }
 }
