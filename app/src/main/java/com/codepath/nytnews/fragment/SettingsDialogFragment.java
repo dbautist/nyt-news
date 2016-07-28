@@ -1,8 +1,10 @@
 package com.codepath.nytnews.fragment;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -20,10 +23,13 @@ import com.codepath.nytnews.utils.AppConstants;
 
 import org.parceler.Parcels;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +93,7 @@ public class SettingsDialogFragment extends DialogFragment {
   }
 
   private void initDialog() {
-    beginDateTextView.setText(mFilterSettings.beginDate);
+    setDateText();
     setSpinnerToValue(mFilterSettings.sortOrder);
     if (mFilterSettings.newsDeskValues != null) {
       // TODO: improve code
@@ -117,13 +123,47 @@ public class SettingsDialogFragment extends DialogFragment {
     sortSpinner.setSelection(index);
   }
 
+  @OnClick(R.id.beginDateTextView)
+  public void showDatePicker() {
+    // http://stackoverflow.com/a/20673756
+    Calendar calendar = Calendar.getInstance();
+    if (!TextUtils.isEmpty(mFilterSettings.beginDate)) {
+      try {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        Date date = sdf.parse(mFilterSettings.beginDate);
+        calendar.setTime(date);
+      } catch (ParseException e) {
+        // TODO: error
+      }
+    }
+
+    DatePickerFragment datePickerFragment = new DatePickerFragment();
+    Bundle args = new Bundle();
+    args.putInt(AppConstants.YEAR_EXTRA, calendar.get(Calendar.YEAR));
+    args.putInt(AppConstants.MONTH_EXTRA, calendar.get(Calendar.MONTH));
+    args.putInt(AppConstants.DAY_EXTRA, calendar.get(Calendar.DAY_OF_MONTH));
+    datePickerFragment.setArguments(args);
+    datePickerFragment.setListener(new DatePickerDialog.OnDateSetListener() {
+      @Override
+      public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        Log.d(TAG, "y=" + year + ",m=" + monthOfYear + ",d=" + dayOfMonth);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth);
+        Date date = calendar.getTime();
+        String dateString = getDate(date);
+        mFilterSettings.beginDate = dateString;
+        setDateText();
+      }
+    });
+    datePickerFragment.show(getFragmentManager(), "Date Picker");
+  }
+
   @OnClick(R.id.saveButton)
   public void save(View view) {
     Log.d(TAG, "----- save");
 
     SettingsDialogListener listener = (SettingsDialogListener) getActivity();
     if (listener != null) {
-      mFilterSettings.beginDate = "20160711";
       mFilterSettings.sortOrder = sortSpinner.getSelectedItem().toString();
       List<String> newsDeskArrayList = new ArrayList<>();
       if (artsCheckbox.isChecked()) {
@@ -142,11 +182,26 @@ public class SettingsDialogFragment extends DialogFragment {
     dismiss();
   }
 
-  private String getDate() {
-    Date curDate = new Date();
+  private String getDate(Date date) {
     SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-    String dateToStr = format.format(curDate);
+    String dateToStr = format.format(date);
 
     return dateToStr;
+  }
+
+  private void setDateText() {
+    if (!TextUtils.isEmpty(mFilterSettings.beginDate)) {
+      try {
+        SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = oldDateFormat.parse(mFilterSettings.beginDate);
+
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String newDateString = newDateFormat.format(date);
+        beginDateTextView.setText(newDateString);
+        Log.d(TAG, "---------- newDateString: " + newDateString);
+      } catch (ParseException e) {
+        // TODO: log
+      }
+    }
   }
 }

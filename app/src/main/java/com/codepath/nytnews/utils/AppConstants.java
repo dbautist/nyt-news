@@ -16,4 +16,7 @@ public class AppConstants {
   // INTENT/BUNDLE EXTRAS
   public static final String ARTICLE_EXTRA = "ARTICLE_EXTRA";
   public static final String FILTER_SETTINGS_EXTRA = "FILTER_SETTINGS_EXTRA";
+  public static final String YEAR_EXTRA = "YEAR_EXTRA";
+  public static final String MONTH_EXTRA = "MONTH_EXTRA";
+  public static final String DAY_EXTRA = "DAY_EXTRA";
 }
