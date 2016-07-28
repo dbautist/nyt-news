@@ -1,3 +1,16 @@
 <resources>
-  <string name="app_name">NYTNews</string>
+  <string name="app_name">The New York Times</string>
+  <string name="title_activity_content_search">ContentSearchActivity</string>
+  <string name="action_settings">Settings</string>
+  <string name="begin_date">Begin Date</string>
+  <string name="sort_order">Sort Order</string>
+  <string name="news_desk_values">News Desk Values</string>
+  <string name="arts">Arts</string>
+  <string name="fashion_style"><![CDATA[Fashion & Style]]></string>
+  <string name="sports">Sports</string>
+  <string name="save">Save</string>
+  <string-array name="sort_array">
+    <item>Oldest</item>
+    <item>Newest</item>
+  </string-array>
 </resources>
