@@ -6,4 +6,6 @@ public class AppConstants {
   public static final String NYT_ARTICLE_SEARCH_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
   public static final String NYT_THUMBNAIL_PREFIX_URL = "http://www.nytimes.com/";
 
+  // INTENT EXTRAS
+  public static final String ARTICLE_EXTRA = "ARTICLE_EXTRA";
 }

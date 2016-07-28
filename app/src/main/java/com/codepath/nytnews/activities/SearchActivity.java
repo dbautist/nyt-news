@@ -1,5 +1,6 @@
 package com.codepath.nytnews.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -21,6 +23,9 @@ import com.codepath.nytnews.R;
 import com.codepath.nytnews.adapters.ArticleArrayAdapter;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.network.ArticleClient;
+import com.codepath.nytnews.utils.AppConstants;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +57,23 @@ public class SearchActivity extends AppCompatActivity {
   }
 
   private void initList() {
+    mClient = new ArticleClient();
     mArticleList = new ArrayList<>();
     mAdapter = new ArticleArrayAdapter(this, mArticleList);
     articleGridView.setAdapter(mAdapter);
-    mClient = new ArticleClient();
+    articleGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Article article = mAdapter.getItem(position);
+        if (article != null) {
+          Intent intent = new Intent(SearchActivity.this, ArticleActivity.class);
+          intent.putExtra(AppConstants.ARTICLE_EXTRA, Parcels.wrap(article));
+          startActivity(intent);
+        } else {
+          // TODO: Error
+        }
+      }
+    });
   }
 
   private void getArticleList(@NonNull String query) {
