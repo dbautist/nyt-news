@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +20,12 @@ public class ArticleClient {
 
   public interface ArticleCatalogListener<T extends JSONSerializable> {
     void onRequestSuccess(List<T> requestList);
+
     void onRequestFailure();
   }
 
   // https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=97fef03e1639426fb860d1ad4fb4778a
-  public void getArticleList(String query, final ArticleCatalogListener listener) {
+  public void getArticleList(Map<String, String> paramsMap, int page, final ArticleCatalogListener listener) {
     HttpService httpService = new HttpService(new HttpService.HttpResponseListener() {
       @Override
       public void onRequestFinished(HttpResponse response) {
@@ -48,15 +50,21 @@ public class ArticleClient {
     });
 
     String url = AppConstants.NYT_ARTICLE_SEARCH_URL;
-    Map<String, String> paramsMap = new HashMap<>();
-    paramsMap.put("api-key", AppConstants.NYT_API_KEY);
-    paramsMap.put("page", "0");
+    Map<String, String> requestParams = new HashMap<>();
+    requestParams.put("api-key", AppConstants.NYT_API_KEY);
+    requestParams.put("page", Integer.toString(page));
 
-    if (query != null && !query.isEmpty()) {
-      paramsMap.put("q", query);
+    if (paramsMap != null) {
+      for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
+        String key = entry.getKey();
+        String value = entry.getValue();
+        // ...
+        Log.d(TAG, "key=" + key + ";value=" + value);
+        requestParams.put(key, value);
+      }
     }
 
-    httpService.getResponse(url, paramsMap);
+    httpService.getResponse(url, requestParams);
   }
 
   private void onRequestFailed(ArticleCatalogListener listener) {
