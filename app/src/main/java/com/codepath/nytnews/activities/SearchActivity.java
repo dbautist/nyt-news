@@ -28,6 +28,7 @@ import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.models.FilterSettings;
 import com.codepath.nytnews.network.ArticleClient;
 import com.codepath.nytnews.utils.AppConstants;
+import com.codepath.nytnews.utils.EndlessScrollListener;
 
 import org.parceler.Parcels;
 
@@ -82,6 +83,17 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
         }
       }
     });
+    articleGridView.setOnScrollListener(new EndlessScrollListener() {
+      @Override
+      public boolean onLoadMore(int page, int totalItemsCount) {
+        Log.d(TAG, "======= onLoadMore: page=" + page + "; totalItemsCount=" + totalItemsCount);
+        // Triggered only when new data needs to be appended to the list
+        // Add whatever code is needed to append new items to your AdapterView
+        customLoadMoreDataFromApi(page);
+        // or customLoadMoreDataFromApi(totalItemsCount);
+        return true; // ONLY if more data is actually being loaded; false otherwise.
+      }
+    });
   }
 
   @Override
@@ -101,7 +113,7 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
         mAdapter.notifyDataSetChanged();
 
         // perform query here
-        getArticleList();
+        getArticleList(0, true);
 
         // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
         // see https://code.google.com/p/android/issues/detail?id=24599
@@ -145,13 +157,28 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
     return super.onOptionsItemSelected(item);
   }
 
-  private void getArticleList() {
+
+  // Append more data into the adapter
+  public void customLoadMoreDataFromApi(int offset) {
+    // This method probably sends out a network request and appends new data items to your adapter.
+    // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+    // Deserialize API response and then construct new objects to append to the adapter
+    getArticleList(offset, false);
+  }
+
+  /**
+   * @param page
+   * @param shouldClear true if list needs to be cleared. This is the case when fetching for the first time.
+   */
+  private void getArticleList(int page, final boolean shouldClear) {
     Map<String, String> requestParams = getRequestParams();
-    mClient.getArticleList(requestParams, 0, new ArticleClient.ArticleCatalogListener() {
+    mClient.getArticleList(requestParams, page, new ArticleClient.ArticleCatalogListener() {
       @Override
       public void onRequestSuccess(List requestList) {
         Log.d(TAG, "--------- onRequestSuccess");
-        mArticleList.clear();
+        if (shouldClear) {
+          mArticleList.clear();
+        }
         mArticleList.addAll(requestList);
         mAdapter.notifyDataSetChanged();
       }
@@ -197,6 +224,6 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
   public void onFinishSettingsDialog(FilterSettings filterSettings) {
     this.mFilterSettings = filterSettings;
     // Update the search result if there's a query string
-    getArticleList();
+    getArticleList(0, true);
   }
 }
