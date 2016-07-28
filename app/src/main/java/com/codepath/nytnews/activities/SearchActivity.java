@@ -9,17 +9,14 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.adapters.ArticleArrayAdapter;
@@ -39,7 +36,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SearchActivity extends AppCompatActivity implements SettingsDialogFragment.SettingsDialogListener {
   private static final String TAG = SearchActivity.class.getSimpleName();
@@ -94,6 +90,7 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
         return true; // ONLY if more data is actually being loaded; false otherwise.
       }
     });
+    getArticleList(0, true);
   }
 
   @Override
@@ -127,10 +124,6 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
         return false;
       }
     });
-
-    // Expand the search view and request focus
-    searchItem.expandActionView();
-    searchView.requestFocus();
 
     // Customize searchview text and hint colors
     int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
