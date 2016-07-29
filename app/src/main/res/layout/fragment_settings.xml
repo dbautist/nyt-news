@@ -1,91 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="40dp">
+                android:layout_height="wrap_content">
+
 
   <TextView
       android:id="@+id/textView"
-      android:layout_width="@dimen/filter_headline_width"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentLeft="true"
       android:layout_alignParentStart="true"
-      android:layout_alignParentTop="true"
-      android:text="@string/begin_date"/>
+      android:layout_marginLeft="@dimen/filter_headline_margin_top"
+      android:layout_marginRight="@dimen/filter_headline_margin_top"
+      android:layout_marginTop="@dimen/filter_headline_margin_top"
+      android:gravity="center_horizontal"
+      android:text="@string/begin_date"
+      android:textColor="@color/secondary_text"/>
 
   <TextView
       android:id="@+id/beginDateTextView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignBottom="@+id/textView"
-      android:layout_toEndOf="@+id/textView"
-      android:layout_toRightOf="@+id/textView"
-      android:text="New Text"/>
+      android:layout_alignLeft="@+id/textView"
+      android:layout_alignRight="@+id/textView"
+      android:layout_below="@+id/textView"
+      android:gravity="center_horizontal"
+      android:padding="5dp"
+      android:text="@string/select_date"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="@color/primary_dark"/>
 
   <TextView
       android:id="@+id/textView3"
-      android:layout_width="@dimen/filter_headline_width"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentStart="true"
-      android:layout_below="@+id/textView"
-      android:text="@string/sort_order"/>
+      android:layout_alignLeft="@+id/beginDateTextView"
+      android:layout_alignRight="@+id/beginDateTextView"
+      android:layout_below="@+id/beginDateTextView"
+      android:layout_marginTop="@dimen/filter_headline_margin_top"
+      android:gravity="center_horizontal"
+      android:text="@string/sort_order"
+      android:textColor="@color/secondary_text"/>
 
   <Spinner
       android:id="@+id/sortSpinner"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@+id/textView"
-      android:layout_toEndOf="@+id/textView3"
-      android:layout_toRightOf="@+id/textView3"
+      android:layout_alignLeft="@+id/beginDateTextView"
+      android:gravity="center_horizontal"
+      android:layout_alignRight="@+id/beginDateTextView"
+      android:layout_below="@+id/textView3"
+      android:layout_margin="5dp"
+      android:background="@drawable/item_background"
       android:entries="@array/sort_array"
       android:spinnerMode="dropdown"/>
 
   <TextView
       android:id="@+id/textView2"
-      android:layout_width="@dimen/filter_headline_width"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/beginDateTextView"
+      android:layout_alignRight="@+id/beginDateTextView"
       android:layout_below="@+id/sortSpinner"
-      android:layout_toLeftOf="@+id/beginDateTextView"
-      android:layout_toStartOf="@+id/beginDateTextView"
-      android:lines="2"
-      android:text="@string/news_desk_values"/>
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="@dimen/filter_headline_margin_top"
+      android:gravity="center_horizontal"
+      android:text="@string/news_desk_values"
+      android:textColor="@color/secondary_text"/>
 
   <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/arts"
       android:id="@+id/artsCheckbox"
-      android:layout_alignTop="@+id/textView2"
-      android:layout_toRightOf="@+id/textView2"
-      android:layout_toEndOf="@+id/textView2"
-      android:checked="false"/>
-
-  <CheckBox
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/fashion_style"
+      android:layout_alignLeft="@+id/beginDateTextView"
+      android:layout_below="@+id/textView2"
+      android:layout_marginLeft="30dp"
+      android:checked="false"
+      android:text="@string/arts"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="@color/primary_dark"/>
+
+  <CheckBox
       android:id="@+id/fashionStyleCheckbox"
-      android:layout_below="@+id/artsCheckbox"
-      android:layout_alignLeft="@+id/artsCheckbox"
-      android:layout_alignStart="@+id/artsCheckbox"
-      android:checked="false"/>
-
-  <CheckBox
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/sports"
-      android:id="@+id/sportsCheckbox"
-      android:layout_below="@+id/fashionStyleCheckbox"
       android:layout_alignLeft="@+id/artsCheckbox"
-      android:layout_alignStart="@+id/artsCheckbox"
-      android:checked="false"/>
+      android:layout_below="@id/artsCheckbox"
+      android:checked="false"
+      android:text="@string/fashion_style"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="@color/primary_dark"/>
+
+  <CheckBox
+      android:id="@+id/sportsCheckbox"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/fashionStyleCheckbox"
+      android:layout_below="@id/fashionStyleCheckbox"
+      android:checked="false"
+      android:text="@string/sports"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textColor="@color/primary_dark"/>
 
   <Button
+      android:id="@+id/saveButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/save"
-      android:id="@+id/saveButton"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentStart="true"
       android:layout_below="@+id/sportsCheckbox"
-      android:layout_centerHorizontal="true"/>
+      android:layout_marginTop="50dp"
+      android:background="@color/accent"
+      android:padding="10dp"
+      android:text="@string/save"
+      android:textColor="@android:color/white"/>
 </RelativeLayout>

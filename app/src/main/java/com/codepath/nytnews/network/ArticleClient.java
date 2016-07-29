@@ -1,5 +1,6 @@
 package com.codepath.nytnews.network;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.codepath.nytnews.models.Article;
@@ -58,9 +59,10 @@ public class ArticleClient {
       for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
         String key = entry.getKey();
         String value = entry.getValue();
-        // ...
         Log.d(TAG, "key=" + key + ";value=" + value);
-        requestParams.put(key, value);
+        if (!TextUtils.isEmpty(value)) {
+          requestParams.put(key, value);
+        }
       }
     }
 

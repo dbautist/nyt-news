@@ -2,6 +2,7 @@ package com.codepath.nytnews.adapters;
 
 import android.content.Context;
 import android.graphics.Movie;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.utils.PicassoViewHelper;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,12 +44,24 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
     Article article = getItem(position);
     if (article != null) {
       viewHolder.headlineTextView.setText(article.headline);
+      viewHolder.snippetTextView.setText(article.snippet);
+      viewHolder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
+
       if ( !TextUtils.isEmpty(article.thumbNail)) {
         Log.d(TAG, "====== thumbNail: " + article.thumbNail);
         int defaultDpWidth = (int)getContext().getResources().getDimension(R.dimen.image_background_width);
-        PicassoViewHelper picassoViewHelper = new PicassoViewHelper(getContext(), article.thumbNail, R.drawable.poster_image_placeholder);
+        PicassoViewHelper picassoViewHelper = new PicassoViewHelper(getContext(), article.thumbNail, R.drawable.loading_placeholder);
         picassoViewHelper.getRequestCreator()
+            .resize(defaultDpWidth, 0)
             .into(viewHolder.imageView);
+      }
+
+      if (!TextUtils.isEmpty(article.newsDesk)) {
+        viewHolder.newsDeskTextView.setVisibility(View.VISIBLE);
+        viewHolder.newsDeskTextView.setText(article.newsDesk);
+        viewHolder.newsDeskTextView.setBackgroundColor(ContextCompat.getColor(getContext(), article.newsDeskColorId));
+      } else {
+        viewHolder.newsDeskTextView.setVisibility(View.INVISIBLE);
       }
     }
 
@@ -59,6 +73,10 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
     ImageView imageView;
     @BindView(R.id.headlineTextView)
     TextView headlineTextView;
+    @BindView(R.id.newsDeskTextView)
+    TextView newsDeskTextView;
+    @BindView(R.id.snippetTextView)
+    TextView snippetTextView;
 
     public ArticleViewHolder(View view) {
       ButterKnife.bind(this, view);

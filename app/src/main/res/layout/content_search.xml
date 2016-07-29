@@ -15,6 +15,9 @@
       android:id="@+id/articleGridView"
       android:layout_alignParentLeft="true"
       android:layout_alignParentStart="true"
+      android:horizontalSpacing="@dimen/gridview_margin"
+      android:verticalSpacing="@dimen/gridview_margin"
+      android:padding="@dimen/gridview_margin"
       android:numColumns="2"
       android:choiceMode="singleChoice"/>
 

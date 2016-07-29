@@ -3,26 +3,57 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/darker_gray"
-              android:gravity="center"
+              android:layout_margin="5dp"
+              android:background="@drawable/item_background"
               android:orientation="vertical"
-    android:padding="5dp">
+              android:padding="10dp">
 
   <ImageView
       android:id="@+id/imageView"
       android:layout_width="@dimen/image_background_width"
       android:layout_height="@dimen/image_background_width"
-      android:background="@android:color/holo_red_light"
+      android:layout_gravity="center_horizontal"
+      android:layout_margin="5dp"
       android:scaleType="fitXY"
-      tools:src="@mipmap/ic_launcher"/>
+      android:src="@drawable/new_york_time_placeholder"/>
 
   <TextView
       android:id="@+id/headlineTextView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:textColor="@color/primary_text"
       android:ellipsize="end"
+      android:lines="3"
       android:maxLines="3"
       android:text="New Text"
-      android:background="@android:color/holo_blue_bright"
+      android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+  <TextView
+      android:id="@+id/newsDeskTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="7dp"
+      android:layout_marginBottom="7dp"
+      android:background="@color/primary_light"
+      android:paddingBottom="3dp"
+      android:paddingLeft="7dp"
+      android:paddingRight="7dp"
+      android:paddingTop="3dp"
+      android:textAllCaps="true"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/small_text"
+      tools:text="Education"/>
+
+  <TextView
+      android:id="@+id/snippetTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/secondary_text"
+      android:ellipsize="end"
+      android:lines="5"
+      android:maxLines="5"
+      android:text="New Text"
       android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+
 </LinearLayout>

@@ -1,7 +1,10 @@
 package com.codepath.nytnews.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
@@ -30,10 +33,12 @@ public class ArticleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_article);
     ButterKnife.bind(this);
 
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setDisplayHomeAsUpEnabled(true);
 
     Article article = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.ARTICLE_EXTRA));
     if (article != null) {
+      actionBar.setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, article.newsDeskColorId)));
       loadArticle(article);
     } else {
       // TODO: Error

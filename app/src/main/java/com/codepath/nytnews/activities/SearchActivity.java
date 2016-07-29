@@ -185,10 +185,14 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
 
   private Map<String, String> getRequestParams() {
     Map<String, String> requestParams = new HashMap<>();
-    requestParams.put(AppConstants.QUERY_PARAM, mQueryString);
+    if (mQueryString != null) {
+      requestParams.put(AppConstants.QUERY_PARAM, mQueryString);
+    }
 
     if (mFilterSettings != null) {
-      requestParams.put(AppConstants.BEGIN_DATE_PARAM, mFilterSettings.beginDate);
+      if (mFilterSettings.beginDate != null) {
+        requestParams.put(AppConstants.BEGIN_DATE_PARAM, mFilterSettings.beginDate);
+      }
       requestParams.put(AppConstants.SORT_PARAM, mFilterSettings.sortOrder);
 
       if (mFilterSettings.newsDeskValues != null && mFilterSettings.newsDeskValues.size() > 0) {
