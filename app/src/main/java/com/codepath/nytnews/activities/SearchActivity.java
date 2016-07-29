@@ -2,12 +2,16 @@ package com.codepath.nytnews.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -20,12 +24,16 @@ import android.widget.GridView;
 
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.adapters.ArticleArrayAdapter;
+import com.codepath.nytnews.adapters.ArticlesAdapter;
 import com.codepath.nytnews.fragment.SettingsDialogFragment;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.models.FilterSettings;
 import com.codepath.nytnews.network.ArticleClient;
 import com.codepath.nytnews.utils.AppConstants;
+import com.codepath.nytnews.utils.DividerItemDecoration;
+import com.codepath.nytnews.utils.EndlessRecyclerViewScrollListener;
 import com.codepath.nytnews.utils.EndlessScrollListener;
+import com.codepath.nytnews.utils.ItemClickSupport;
 
 import org.parceler.Parcels;
 
@@ -39,12 +47,12 @@ import butterknife.ButterKnife;
 
 public class SearchActivity extends AppCompatActivity implements SettingsDialogFragment.SettingsDialogListener {
   private static final String TAG = SearchActivity.class.getSimpleName();
-  @BindView(R.id.articleGridView)
-  GridView articleGridView;
+  @BindView(R.id.articleRecyclerView)
+  RecyclerView articleRecyclerView;
 
   @NonNull
   private ArticleClient mClient;
-  private ArticleArrayAdapter mAdapter;
+  private ArticlesAdapter mAdapter;
   private ArrayList<Article> mArticleList;
   private FilterSettings mFilterSettings;
   private String mQueryString;
@@ -64,32 +72,40 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
   private void initList() {
     mClient = new ArticleClient();
     mArticleList = new ArrayList<>();
-    mAdapter = new ArticleArrayAdapter(this, mArticleList);
-    articleGridView.setAdapter(mAdapter);
-    articleGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Article article = mAdapter.getItem(position);
-        if (article != null) {
-          Intent intent = new Intent(SearchActivity.this, ArticleActivity.class);
-          intent.putExtra(AppConstants.ARTICLE_EXTRA, Parcels.wrap(article));
-          startActivity(intent);
-        } else {
-          // TODO: Error
+    mAdapter = new ArticlesAdapter(this, mArticleList);
+    articleRecyclerView.setAdapter(mAdapter);
+
+    // First param is number of columns and second param is orientation i.e Vertical or Horizontal
+    StaggeredGridLayoutManager gridLayoutManager =
+        new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+    articleRecyclerView.setLayoutManager(gridLayoutManager);
+
+    ItemClickSupport.addTo(articleRecyclerView).setOnItemClickListener(
+        new ItemClickSupport.OnItemClickListener() {
+          @Override
+          public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+            Article article = mArticleList.get(position);
+            if (article != null) {
+              Intent intent = new Intent(SearchActivity.this, ArticleActivity.class);
+              intent.putExtra(AppConstants.ARTICLE_EXTRA, Parcels.wrap(article));
+              startActivity(intent);
+            } else {
+              // TODO: Error
+            }
+          }
         }
-      }
-    });
-    articleGridView.setOnScrollListener(new EndlessScrollListener() {
+    );
+
+    // http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView#implementing-with-recyclerview
+    articleRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
       @Override
-      public boolean onLoadMore(int page, int totalItemsCount) {
-        Log.d(TAG, "======= onLoadMore: page=" + page + "; totalItemsCount=" + totalItemsCount);
+      public void onLoadMore(int page, int totalItemsCount) {
         // Triggered only when new data needs to be appended to the list
-        // Add whatever code is needed to append new items to your AdapterView
+        // Add whatever code is needed to append new items to the bottom of the list
         customLoadMoreDataFromApi(page);
-        // or customLoadMoreDataFromApi(totalItemsCount);
-        return true; // ONLY if more data is actually being loaded; false otherwise.
       }
     });
+
     getArticleList(0, true);
   }
 
@@ -172,8 +188,13 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
         if (shouldClear) {
           mArticleList.clear();
         }
+
         mArticleList.addAll(requestList);
         mAdapter.notifyDataSetChanged();
+//        mAdapter.notifyItemRangeInserted(curSize, requestList.size());
+
+//        mAdapter.notifyItemInserted(mArticleList.size() - 1);  // contacts.size() - 1 is the last element position
+//        articleRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1); // update based on adapter
       }
 
       @Override

@@ -23,8 +23,7 @@
       android:layout_height="wrap_content"
       android:textColor="@color/primary_text"
       android:ellipsize="end"
-      android:lines="3"
-      android:maxLines="3"
+      android:maxLines="5"
       android:text="New Text"
       android:textAppearance="?android:attr/textAppearanceMedium"/>
 
@@ -50,7 +49,6 @@
       android:layout_height="wrap_content"
       android:textColor="@color/secondary_text"
       android:ellipsize="end"
-      android:lines="5"
       android:maxLines="5"
       android:text="New Text"
       android:textAppearance="?android:attr/textAppearanceSmall"/>
