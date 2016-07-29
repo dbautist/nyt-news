@@ -1,6 +1,8 @@
 package com.codepath.nytnews.adapters;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.graphics.Movie;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.nytnews.R;
+import com.codepath.nytnews.databinding.ItemArticleBinding;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.utils.PicassoViewHelper;
 
@@ -41,9 +44,9 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
   @Override
   public void onBindViewHolder(ArticleViewHolder holder, int position) {
     Article article = mArticleList.get(position);
+    holder.bindTo(article);
+
     if (article != null) {
-      holder.headlineTextView.setText(article.headline);
-      holder.snippetTextView.setText(article.snippet);
       holder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
 
       if ( !TextUtils.isEmpty(article.thumbNail)) {
@@ -57,7 +60,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
       if (!TextUtils.isEmpty(article.newsDesk)) {
         holder.newsDeskTextView.setVisibility(View.VISIBLE);
-        holder.newsDeskTextView.setText(article.newsDesk);
         holder.newsDeskTextView.setBackgroundColor(ContextCompat.getColor(mContext, article.newsDeskColorId));
       } else {
         holder.newsDeskTextView.setVisibility(View.GONE);
@@ -71,6 +73,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
   }
 
   public static class ArticleViewHolder extends RecyclerView.ViewHolder {
+    private ItemArticleBinding mBinding;
+
     @BindView(R.id.imageView)
     ImageView imageView;
     @BindView(R.id.headlineTextView)
@@ -82,7 +86,13 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
     public ArticleViewHolder(View itemView) {
       super(itemView);
+      this.mBinding = DataBindingUtil.bind(itemView);
       ButterKnife.bind(this, itemView);
+    }
+
+    public void bindTo(Article article) {
+      mBinding.setArticle(article);
+      mBinding.executePendingBindings();
     }
   }
 }

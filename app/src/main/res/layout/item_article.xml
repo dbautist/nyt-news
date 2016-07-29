@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="5dp"
-              android:background="@drawable/item_background"
-              android:orientation="vertical"
-              android:padding="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
-  <ImageView
-      android:id="@+id/imageView"
-      android:layout_width="@dimen/image_background_width"
-      android:layout_height="@dimen/image_background_width"
-      android:layout_gravity="center_horizontal"
+  <data>
+    <import type="android.view.View"/>
+
+    <variable
+        name="article"
+        type="com.codepath.nytnews.models.Article"/>
+  </data>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:layout_margin="5dp"
-      android:scaleType="fitXY"
-      android:src="@drawable/new_york_time_placeholder"/>
+      android:background="@drawable/item_background"
+      android:orientation="vertical"
+      android:padding="10dp">
 
-  <TextView
-      android:id="@+id/headlineTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/primary_text"
-      android:ellipsize="end"
-      android:maxLines="5"
-      android:text="New Text"
-      android:textAppearance="?android:attr/textAppearanceMedium"/>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/image_background_width"
+        android:layout_height="@dimen/image_background_width"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/new_york_time_placeholder"/>
 
-  <TextView
-      android:id="@+id/newsDeskTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="7dp"
-      android:layout_marginBottom="7dp"
-      android:background="@color/primary_light"
-      android:paddingBottom="3dp"
-      android:paddingLeft="7dp"
-      android:paddingRight="7dp"
-      android:paddingTop="3dp"
-      android:textAllCaps="true"
-      android:textColor="@android:color/white"
-      android:textSize="@dimen/small_text"
-      tools:text="Education"/>
+    <TextView
+        android:id="@+id/headlineTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:text="@{article.headline}"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text"/>
 
-  <TextView
-      android:id="@+id/snippetTextView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/secondary_text"
-      android:ellipsize="end"
-      android:maxLines="5"
-      android:text="New Text"
-      android:textAppearance="?android:attr/textAppearanceSmall"/>
+    <TextView
+        android:id="@+id/newsDeskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/primary_light"
+        android:paddingBottom="3dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="3dp"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/small_text"
+        android:text="@{article.newsDesk}"/>
+
+    <TextView
+        android:id="@+id/snippetTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:text="@{article.snippet}"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/secondary_text"/>
 
 
-</LinearLayout>
+  </LinearLayout>
+</layout>
