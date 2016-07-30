@@ -2,11 +2,9 @@ package com.codepath.nytnews.adapters;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Movie;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +13,7 @@ import android.widget.TextView;
 
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.databinding.ItemArticleBinding;
+import com.codepath.nytnews.databinding.ItemArticlePreviewBinding;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.utils.PicassoViewHelper;
 
@@ -23,8 +22,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
   private static final String TAG = ArticlesAdapter.class.getSimpleName();
+  public static final int TYPE_ARTICLE = 0;
+  public static final int TYPE_ARTICLE_PREVIEW = 1;
+
   private List<Article> mArticleList;
   private Context mContext;
 
@@ -34,34 +36,61 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
   }
 
   @Override
-  public ArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.item_article, parent, false);
-    ArticleViewHolder viewHolder =  new ArticleViewHolder(view);
+  public int getItemViewType(int position) {
+    Article article = mArticleList.get(position);
+    if (article.isArticlePreview) {
+      return TYPE_ARTICLE_PREVIEW;
+    } else {
+      return TYPE_ARTICLE;
+    }
+  }
+
+
+  @Override
+  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    ViewHolder viewHolder;
+    if (viewType == TYPE_ARTICLE_PREVIEW) {
+      View view = LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.item_article_preview, parent, false);
+      viewHolder = new ArticlePreviewViewHolder(view);
+    } else {
+      View view = LayoutInflater.from(parent.getContext())
+          .inflate(R.layout.item_article, parent, false);
+      viewHolder = new ArticleViewHolder(view);
+    }
+
     return viewHolder;
   }
 
   @Override
-  public void onBindViewHolder(ArticleViewHolder holder, int position) {
+  public void onBindViewHolder(ViewHolder holder, int position) {
     Article article = mArticleList.get(position);
-    holder.bindTo(article);
 
-    if (article != null) {
-      holder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
+    int type = getItemViewType(position);
+    if (type == TYPE_ARTICLE_PREVIEW) {
+      ArticlePreviewViewHolder articlePreviewViewHolder = (ArticlePreviewViewHolder) holder;
+      articlePreviewViewHolder.bindTo(article);
+    } else {
+      final ArticleViewHolder articleViewHolder = (ArticleViewHolder) holder;
+      articleViewHolder.bindTo(article);
 
-      if ( !TextUtils.isEmpty(article.thumbNail)) {
-        int defaultDpWidth = (int)mContext.getResources().getDimension(R.dimen.image_background_width);
-        PicassoViewHelper picassoViewHelper = new PicassoViewHelper(mContext, article.thumbNail, R.drawable.loading_placeholder);
-        picassoViewHelper.getRequestCreator()
-            .resize(defaultDpWidth, 0)
-            .into(holder.imageView);
-      }
+      if (article != null) {
+        articleViewHolder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
 
-      if (!TextUtils.isEmpty(article.newsDesk)) {
-        holder.newsDeskTextView.setVisibility(View.VISIBLE);
-        holder.newsDeskTextView.setBackgroundColor(ContextCompat.getColor(mContext, article.newsDeskColorId));
-      } else {
-        holder.newsDeskTextView.setVisibility(View.GONE);
+        if (!TextUtils.isEmpty(article.thumbNail)) {
+          int defaultDpWidth = (int) mContext.getResources().getDimension(R.dimen.image_background_width);
+          PicassoViewHelper picassoViewHelper = new PicassoViewHelper(mContext, article.thumbNail, R.drawable.loading_placeholder);
+          picassoViewHelper.getRequestCreator()
+              .resize(defaultDpWidth, 0)
+              .into(articleViewHolder.imageView);
+        }
+
+        if (!TextUtils.isEmpty(article.newsDesk)) {
+          articleViewHolder.newsDeskTextView.setVisibility(View.VISIBLE);
+          articleViewHolder.newsDeskTextView.setBackgroundColor(ContextCompat.getColor(mContext, article.colorId));
+        } else {
+          articleViewHolder.newsDeskTextView.setVisibility(View.GONE);
+        }
       }
     }
   }
@@ -71,19 +100,37 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     return mArticleList.size();
   }
 
-  public static class ArticleViewHolder extends RecyclerView.ViewHolder {
+  public static class ViewHolder extends RecyclerView.ViewHolder {
+    protected ViewHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
+    }
+  }
+
+  public static class ArticleViewHolder extends ViewHolder {
     private ItemArticleBinding mBinding;
 
     @BindView(R.id.imageView)
     ImageView imageView;
-    @BindView(R.id.headlineTextView)
-    TextView headlineTextView;
     @BindView(R.id.newsDeskTextView)
     TextView newsDeskTextView;
-    @BindView(R.id.snippetTextView)
-    TextView snippetTextView;
 
     public ArticleViewHolder(View itemView) {
+      super(itemView);
+      this.mBinding = DataBindingUtil.bind(itemView);
+      ButterKnife.bind(this, itemView);
+    }
+
+    public void bindTo(Article article) {
+      mBinding.setArticle(article);
+      mBinding.executePendingBindings();
+    }
+  }
+
+  public static class ArticlePreviewViewHolder extends ViewHolder {
+    private ItemArticlePreviewBinding mBinding;
+
+    public ArticlePreviewViewHolder(View itemView) {
       super(itemView);
       this.mBinding = DataBindingUtil.bind(itemView);
       ButterKnife.bind(this, itemView);

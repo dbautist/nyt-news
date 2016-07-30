@@ -1,7 +1,6 @@
 package com.codepath.nytnews.adapters;
 
 import android.content.Context;
-import android.graphics.Movie;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,13 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.utils.PicassoViewHelper;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -59,7 +56,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
       if (!TextUtils.isEmpty(article.newsDesk)) {
         viewHolder.newsDeskTextView.setVisibility(View.VISIBLE);
         viewHolder.newsDeskTextView.setText(article.newsDesk);
-        viewHolder.newsDeskTextView.setBackgroundColor(ContextCompat.getColor(getContext(), article.newsDeskColorId));
+        viewHolder.newsDeskTextView.setBackgroundColor(ContextCompat.getColor(getContext(), article.colorId));
       } else {
         viewHolder.newsDeskTextView.setVisibility(View.INVISIBLE);
       }

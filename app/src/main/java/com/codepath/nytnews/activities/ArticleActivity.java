@@ -39,7 +39,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     Article article = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.ARTICLE_EXTRA));
     if (article != null) {
-      actionBar.setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, article.newsDeskColorId)));
+      actionBar.setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, article.colorId)));
       loadArticle(article);
     } else {
       ErrorHandler.logAppError("Cannot load ArticleActivity -- Article is NULL");

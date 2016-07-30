@@ -12,6 +12,7 @@
   <string name="arts">Arts</string>
   <string name="fashion_style"><![CDATA[Fashion & Style]]></string>
   <string name="sports">Sports</string>
+  <string name="paid_subscription">Paid Subscription</string>
   <string name="save">Save</string>
   <string-array name="sort_array">
     <item>Newest</item>
