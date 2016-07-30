@@ -50,7 +50,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
       holder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
 
       if ( !TextUtils.isEmpty(article.thumbNail)) {
-        Log.d(TAG, "====== thumbNail: " + article.thumbNail);
         int defaultDpWidth = (int)mContext.getResources().getDimension(R.dimen.image_background_width);
         PicassoViewHelper picassoViewHelper = new PicassoViewHelper(mContext, article.thumbNail, R.drawable.loading_placeholder);
         picassoViewHelper.getRequestCreator()

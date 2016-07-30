@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.utils.AppConstants;
+import com.codepath.nytnews.utils.errors.ErrorHandler;
 
 import org.parceler.Parcels;
 
@@ -41,7 +42,8 @@ public class ArticleActivity extends AppCompatActivity {
       actionBar.setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, article.newsDeskColorId)));
       loadArticle(article);
     } else {
-      // TODO: Error
+      ErrorHandler.logAppError("Cannot load ArticleActivity -- Article is NULL");
+      ErrorHandler.displayError(this, AppConstants.DEFAULT_ERROR_MESSAGE);
     }
   }
 

@@ -13,6 +13,10 @@ public class AppConstants {
   public static final String FILTER_QUERY_PARAM = "fq";
   public static final String NEWS_DESK_VAL = "news_desk:(%s)";
 
+  // ERROR MESSAGES
+  public static final String DEFAULT_ERROR_MESSAGE = "Oops, something went wrong. Please restart the app.";
+  public static final String NO_CONNECTION_ERROR_MESSAGE = "Oops, looks like you're not connected to the internet. Please try again later.";
+
   // INTENT/BUNDLE EXTRAS
   public static final String ARTICLE_EXTRA = "ARTICLE_EXTRA";
   public static final String FILTER_SETTINGS_EXTRA = "FILTER_SETTINGS_EXTRA";

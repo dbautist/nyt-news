@@ -2,6 +2,8 @@ package com.codepath.nytnews.network;
 
 import android.util.Log;
 
+import com.codepath.nytnews.utils.AppConstants;
+import com.codepath.nytnews.utils.errors.ErrorHandler;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,7 +35,7 @@ public class HttpService {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         if (response == null) {
-          fireFailureResponse("Response is NULL");
+          fireFailureResponse(0, "Response is NULL");
         } else {
           fireSuccessResponse(response.toString());
         }
@@ -41,7 +43,7 @@ public class HttpService {
 
       @Override
       public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-        fireFailureResponse(responseString);
+        fireFailureResponse(statusCode, responseString);
       }
 
       @Override
@@ -50,7 +52,7 @@ public class HttpService {
         if (errorResponse != null) {
           errorMessage = errorResponse.toString();
         }
-        fireFailureResponse(errorMessage);
+        fireFailureResponse(statusCode, errorMessage);
       }
     });
   }
@@ -60,16 +62,19 @@ public class HttpService {
     if (listener != null) {
       HttpResponse response = new HttpResponse();
       response.setStatus(HttpResponse.Status.Success);
+      response.setStatusCode(200);
       response.setResponse(responseStr);
       listener.onRequestFinished(response);
     }
   }
 
-  private void fireFailureResponse(String failureStr) {
-    Log.d(TAG, "fireFailureResponse: " + failureStr);
+  private void fireFailureResponse(int statusCode, String failureStr) {
+    ErrorHandler.logAppError("StatusCode=" + statusCode + "; ErrorMessage=" + failureStr);
+
     if (listener != null) {
       HttpResponse response = new HttpResponse();
       response.setStatus(HttpResponse.Status.Failed);
+      response.setStatusCode(statusCode);
       response.setFailureMessage(failureStr);
       listener.onRequestFinished(response);
     }

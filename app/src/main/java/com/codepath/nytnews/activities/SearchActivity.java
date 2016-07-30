@@ -2,13 +2,11 @@ package com.codepath.nytnews.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -18,22 +16,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 
 import com.codepath.nytnews.R;
-import com.codepath.nytnews.adapters.ArticleArrayAdapter;
 import com.codepath.nytnews.adapters.ArticlesAdapter;
 import com.codepath.nytnews.fragment.SettingsDialogFragment;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.models.FilterSettings;
 import com.codepath.nytnews.network.ArticleClient;
 import com.codepath.nytnews.utils.AppConstants;
-import com.codepath.nytnews.utils.DividerItemDecoration;
 import com.codepath.nytnews.utils.EndlessRecyclerViewScrollListener;
-import com.codepath.nytnews.utils.EndlessScrollListener;
 import com.codepath.nytnews.utils.ItemClickSupport;
+import com.codepath.nytnews.utils.errors.ErrorHandler;
 
 import org.parceler.Parcels;
 
@@ -90,7 +84,8 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
               intent.putExtra(AppConstants.ARTICLE_EXTRA, Parcels.wrap(article));
               startActivity(intent);
             } else {
-              // TODO: Error
+              ErrorHandler.logAppError("Cannot start ArticleActivity -- Article is NULL");
+              ErrorHandler.displayError(SearchActivity.this, AppConstants.DEFAULT_ERROR_MESSAGE);
             }
           }
         }
@@ -198,8 +193,8 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
       }
 
       @Override
-      public void onRequestFailure() {
-
+      public void onRequestFailure(String errorMessage, boolean shouldDisplayToUser) {
+        ErrorHandler.displayError(SearchActivity.this, errorMessage);
       }
     });
   }

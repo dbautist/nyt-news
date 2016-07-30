@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.models.FilterSettings;
 import com.codepath.nytnews.utils.AppConstants;
+import com.codepath.nytnews.utils.errors.ErrorHandler;
 
 import org.parceler.Parcels;
 
@@ -96,7 +97,6 @@ public class SettingsDialogFragment extends DialogFragment {
     setDateText();
     setSpinnerToValue(mFilterSettings.sortOrder);
     if (mFilterSettings.newsDeskValues != null) {
-      // TODO: improve code
       if (mFilterSettings.newsDeskValues.contains(artsCheckbox.getText().toString())) {
         artsCheckbox.setChecked(true);
       }
@@ -133,7 +133,7 @@ public class SettingsDialogFragment extends DialogFragment {
         Date date = sdf.parse(mFilterSettings.beginDate);
         calendar.setTime(date);
       } catch (ParseException e) {
-        // TODO: error
+        ErrorHandler.handleAppException(e, "Error from showDatePicker()");
       }
     }
 

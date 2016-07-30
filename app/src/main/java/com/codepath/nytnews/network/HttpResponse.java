@@ -7,6 +7,7 @@ public class HttpResponse {
   }
 
   private Status status;
+  private int statusCode;
   private String response;
   private String failureMessage;
 
@@ -16,6 +17,14 @@ public class HttpResponse {
 
   public void setStatus(Status status) {
     this.status = status;
+  }
+
+  public int getStatusCode() {
+    return statusCode;
+  }
+
+  public void setStatusCode(int statusCode) {
+    this.statusCode = statusCode;
   }
 
   public String getResponse() {
