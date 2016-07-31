@@ -57,9 +57,6 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
     setContentView(R.layout.activity_search);
     ButterKnife.bind(this);
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-
     initList();
   }
 
@@ -72,6 +69,7 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
     // First param is number of columns and second param is orientation i.e Vertical or Horizontal
     StaggeredGridLayoutManager gridLayoutManager =
         new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+    gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
     articleRecyclerView.setLayoutManager(gridLayoutManager);
 
     ItemClickSupport.addTo(articleRecyclerView).setOnItemClickListener(

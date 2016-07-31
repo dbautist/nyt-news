@@ -8,14 +8,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.databinding.ItemArticleBinding;
 import com.codepath.nytnews.databinding.ItemArticlePreviewBinding;
 import com.codepath.nytnews.models.Article;
-import com.codepath.nytnews.utils.PicassoViewHelper;
+import com.codepath.nytnews.utils.DynamicHeightImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -75,14 +75,18 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
       articleViewHolder.bindTo(article);
 
       if (article != null) {
-        articleViewHolder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
-
         if (!TextUtils.isEmpty(article.thumbNail)) {
+          articleViewHolder.imageView.setImageResource(0);
+          articleViewHolder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
+          articleViewHolder.imageView.setVisibility(View.VISIBLE);
+          
           int defaultDpWidth = (int) mContext.getResources().getDimension(R.dimen.image_background_width);
-          PicassoViewHelper picassoViewHelper = new PicassoViewHelper(mContext, article.thumbNail, R.drawable.loading_placeholder);
-          picassoViewHelper.getRequestCreator()
+          articleViewHolder.imageView.setHeightRatio(1.0f);
+          Picasso.with(mContext).load(article.thumbNail).placeholder(R.drawable.loading_placeholder)
               .resize(defaultDpWidth, 0)
               .into(articleViewHolder.imageView);
+        } else {
+          articleViewHolder.imageView.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(article.newsDesk)) {
@@ -111,7 +115,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     private ItemArticleBinding mBinding;
 
     @BindView(R.id.imageView)
-    ImageView imageView;
+    DynamicHeightImageView imageView;
     @BindView(R.id.newsDeskTextView)
     TextView newsDeskTextView;
 

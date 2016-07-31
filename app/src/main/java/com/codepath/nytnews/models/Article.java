@@ -60,17 +60,12 @@ public class Article implements JSONSerializable {
           break;
         }
       }
-      if (TextUtils.isEmpty(thumbNail)) {
-        // no thumbnail specific image; default to the first media available
-        multimediaJson = multimedia.getJSONObject(0);
-        thumbNail = AppConstants.NYT_THUMBNAIL_PREFIX_URL + multimediaJson.getString("url");
-      }
     }
   }
 
   private void setNewsDesk(JSONObject jsonObject) throws JSONException {
     newsDesk = jsonObject.getString("news_desk");
-    if (newsDesk.equalsIgnoreCase("null")) {
+    if (newsDesk.equalsIgnoreCase("null") || newsDesk.equalsIgnoreCase("none")) {
       // clean up some data
       newsDesk = "";
     }
@@ -92,5 +87,14 @@ public class Article implements JSONSerializable {
         }
       }
     }
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder str = new StringBuilder();
+    str.append("headline=").append(headline).append("\n");
+    str.append("newsDesk=").append(newsDesk);
+
+    return str.toString();
   }
 }
