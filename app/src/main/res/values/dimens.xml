@@ -5,7 +5,7 @@
   <dimen name="gridview_margin">5dp</dimen>
   <dimen name="settings_padding">20dp</dimen>
 
-  <dimen name="image_background_width">100dp</dimen>
+  <dimen name="image_background_width">75dp</dimen>
   <dimen name="filter_headline_width">100dp</dimen>
   <dimen name="filter_headline_margin_top">30dp</dimen>
 

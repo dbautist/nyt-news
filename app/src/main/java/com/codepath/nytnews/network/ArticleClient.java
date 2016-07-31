@@ -72,6 +72,7 @@ public class ArticleClient {
     Map<String, String> requestParams = new HashMap<>();
     requestParams.put("api-key", AppConstants.NYT_API_KEY);
     requestParams.put("page", Integer.toString(page));
+    Log.d(TAG, "page="+page);
 
     if (paramsMap != null) {
       for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
