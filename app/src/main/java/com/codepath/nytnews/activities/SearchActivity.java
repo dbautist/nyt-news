@@ -114,10 +114,6 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
       public boolean onQueryTextSubmit(String query) {
         mQueryString = query;
 
-        // clear the list; it's a new search
-        mArticleList.clear();
-        mAdapter.notifyDataSetChanged();
-
         // perform query here
         getArticleList(0, true);
 
@@ -173,21 +169,26 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
    * @param shouldClear true if list needs to be cleared. This is the case when fetching for the first time.
    */
   private void getArticleList(int page, final boolean shouldClear) {
+    if (shouldClear) {
+      int listSize = mArticleList.size();
+      mArticleList.clear();
+      mAdapter.notifyItemRangeRemoved(0, listSize);
+    }
+
     Map<String, String> requestParams = getRequestParams();
     mClient.getArticleList(requestParams, page, new ArticleClient.ArticleCatalogListener() {
       @Override
       public void onRequestSuccess(List requestList) {
         Log.d(TAG, "--------- onRequestSuccess");
-        if (shouldClear) {
-          mArticleList.clear();
-        }
 
+        int curSize = mAdapter.getItemCount();
         mArticleList.addAll(requestList);
-        mAdapter.notifyDataSetChanged();
-//        mAdapter.notifyItemRangeInserted(curSize, requestList.size());
+        Log.d(TAG, "======= size:" + curSize + "; requestList size: " + requestList.size());
+        mAdapter.notifyItemRangeInserted(curSize, requestList.size());
 
-//        mAdapter.notifyItemInserted(mArticleList.size() - 1);  // contacts.size() - 1 is the last element position
-//        articleRecyclerView.scrollToPosition(mAdapter.getItemCount() - 1); // update based on adapter
+        if (shouldClear) {
+          articleRecyclerView.scrollToPosition(0);
+        }
       }
 
       @Override
