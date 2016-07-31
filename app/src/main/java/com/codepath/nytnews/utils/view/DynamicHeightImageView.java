@@ -1,4 +1,4 @@
-package com.codepath.nytnews.utils;
+package com.codepath.nytnews.utils.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

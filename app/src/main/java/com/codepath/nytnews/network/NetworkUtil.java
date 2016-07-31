@@ -12,9 +12,9 @@ public class NetworkUtil {
       int exitValue = ipProcess.waitFor();
       return (exitValue == 0);
     } catch (IOException e) {
-      ErrorHandler.handleAppException(e, "NetworkUtil::isOnLine()");
+      ErrorHandler.handleAppException(e, "isOnLine() -- IOException");
     } catch (InterruptedException e) {
-      ErrorHandler.handleAppException(e, "NetworkUtil::isOnLine()");
+      ErrorHandler.handleAppException(e, "isOnLine() -- InterruptedException");
     }
     return false;
   }

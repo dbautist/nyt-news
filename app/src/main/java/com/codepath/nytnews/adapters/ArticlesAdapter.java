@@ -14,7 +14,7 @@ import com.codepath.nytnews.R;
 import com.codepath.nytnews.databinding.ItemArticleBinding;
 import com.codepath.nytnews.databinding.ItemArticlePreviewBinding;
 import com.codepath.nytnews.models.Article;
-import com.codepath.nytnews.utils.DynamicHeightImageView;
+import com.codepath.nytnews.utils.view.DynamicHeightImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -76,10 +76,10 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
 
       if (article != null) {
         if (!TextUtils.isEmpty(article.thumbNail)) {
+          articleViewHolder.imageView.setVisibility(View.VISIBLE);
           articleViewHolder.imageView.setImageResource(0);
           articleViewHolder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
-          articleViewHolder.imageView.setVisibility(View.VISIBLE);
-          
+
           int defaultDpWidth = (int) mContext.getResources().getDimension(R.dimen.image_background_width);
           articleViewHolder.imageView.setHeightRatio(1.0f);
           Picasso.with(mContext).load(article.thumbNail).placeholder(R.drawable.loading_placeholder)

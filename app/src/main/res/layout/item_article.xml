@@ -18,7 +18,7 @@
       android:orientation="vertical"
       android:padding="10dp">
 
-    <com.codepath.nytnews.utils.DynamicHeightImageView
+    <com.codepath.nytnews.utils.view.DynamicHeightImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/image_background_width"
         android:layout_height="@dimen/image_background_width"

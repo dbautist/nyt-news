@@ -15,7 +15,7 @@
       android:layout_marginTop="@dimen/filter_headline_margin_top"
       android:gravity="center_horizontal"
       android:text="@string/begin_date"
-      android:textColor="@color/secondary_text"/>
+      android:textColor="@color/accent"/>
 
   <TextView
       android:id="@+id/beginDateTextView"
@@ -40,7 +40,7 @@
       android:layout_marginTop="@dimen/filter_headline_margin_top"
       android:gravity="center_horizontal"
       android:text="@string/sort_order"
-      android:textColor="@color/secondary_text"/>
+      android:textColor="@color/accent"/>
 
   <Spinner
       android:id="@+id/sortSpinner"
@@ -66,7 +66,7 @@
       android:layout_marginTop="@dimen/filter_headline_margin_top"
       android:gravity="center_horizontal"
       android:text="@string/news_desk_values"
-      android:textColor="@color/secondary_text"/>
+      android:textColor="@color/accent"/>
 
   <CheckBox
       android:id="@+id/artsCheckbox"

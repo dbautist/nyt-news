@@ -200,7 +200,7 @@ public class SettingsDialogFragment extends DialogFragment {
         beginDateTextView.setText(newDateString);
         Log.d(TAG, "---------- newDateString: " + newDateString);
       } catch (ParseException e) {
-        // TODO: log
+        ErrorHandler.handleAppException(e, TAG+":setDateText -- " + mFilterSettings.beginDate);
       }
     }
   }

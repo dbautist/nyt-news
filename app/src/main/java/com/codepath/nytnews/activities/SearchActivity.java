@@ -7,10 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +25,8 @@ import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.models.FilterSettings;
 import com.codepath.nytnews.network.ArticleClient;
 import com.codepath.nytnews.utils.AppConstants;
-import com.codepath.nytnews.utils.EndlessRecyclerViewScrollListener;
-import com.codepath.nytnews.utils.ItemClickSupport;
+import com.codepath.nytnews.utils.view.EndlessRecyclerViewScrollListener;
+import com.codepath.nytnews.utils.view.ItemClickSupport;
 import com.codepath.nytnews.utils.errors.ErrorHandler;
 
 import org.parceler.Parcels;
@@ -66,7 +66,6 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
     mAdapter = new ArticlesAdapter(this, mArticleList);
     articleRecyclerView.setAdapter(mAdapter);
 
-    // First param is number of columns and second param is orientation i.e Vertical or Horizontal
     StaggeredGridLayoutManager gridLayoutManager =
         new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
     gridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
@@ -141,12 +140,7 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
       showSettingsDialog();
       return true;
@@ -158,15 +152,13 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
 
   // Append more data into the adapter
   public void customLoadMoreDataFromApi(int offset) {
-    // This method probably sends out a network request and appends new data items to your adapter.
-    // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-    // Deserialize API response and then construct new objects to append to the adapter
     getArticleList(offset, false);
   }
 
   /**
    * @param page
-   * @param shouldClear true if list needs to be cleared. This is the case when fetching for the first time.
+   * @param shouldClear true if list needs to be cleared. This is the case when a query string is entered
+   *                    or additional filters are provided.
    */
   private void getArticleList(int page, final boolean shouldClear) {
     if (shouldClear) {
@@ -229,13 +221,12 @@ public class SearchActivity extends AppCompatActivity implements SettingsDialogF
     FragmentManager fm = getSupportFragmentManager();
     SettingsDialogFragment settingsDialogFragment = SettingsDialogFragment.newInstance(mFilterSettings);
     settingsDialogFragment.show(fm, "fragment_settings_name");
-
   }
 
   @Override
   public void onFinishSettingsDialog(FilterSettings filterSettings) {
     this.mFilterSettings = filterSettings;
-    // Update the search result if there's a query string
+    // Fetch new results; addl filters have been provided
     getArticleList(0, true);
   }
 }

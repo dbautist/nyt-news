@@ -1,4 +1,4 @@
-package com.codepath.nytnews.utils;
+package com.codepath.nytnews.utils.view;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

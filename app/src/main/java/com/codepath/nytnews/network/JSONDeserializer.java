@@ -3,6 +3,7 @@ package com.codepath.nytnews.network;
 import android.util.Log;
 
 import com.codepath.nytnews.models.JSONSerializable;
+import com.codepath.nytnews.utils.errors.ErrorHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +44,11 @@ public class JSONDeserializer <T extends JSONSerializable> {
       obj.configureFromJSON(json);
       return obj;
     } catch (InstantiationException e) {
-      Log.e(TAG, "InstantiationException", e);
+      ErrorHandler.handleAppException(e, TAG+"InstantiationException");
     } catch (IllegalAccessException e) {
-      Log.e(TAG, "IllegalAccessException", e);
+      ErrorHandler.handleAppException(e, TAG+"IllegalAccessException");
     } catch (JSONException e) {
-      Log.e(TAG, "JSONException", e);
+      ErrorHandler.handleAppException(e, TAG+"JSONException");
     }
 
     return null;
