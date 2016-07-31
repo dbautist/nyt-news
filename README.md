@@ -1,9 +1,9 @@
 
-# Project 2 - *Name of App Here*
+# Project 2 - *New York Times*
 
-**Name of your app** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
+**New York Times** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **X** hours spent in total
+Time spent: **15** hours spent in total
 
 ## User Stories
 
@@ -42,7 +42,8 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x] Created a generic `JSONDeserializer` that converts from JSON to an object
+* [x] Changed the `ActionBar` background color based on the news desk value
 
 ## Video Walkthrough
 
@@ -57,7 +58,8 @@ Describe any challenges encountered while building the app.
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
-
+- [Parceler](http://parceler.org/) - Serializing Java objects between Contexts
+- 
 ## License
 
     Copyright [2016] [Dianne Bautista]
