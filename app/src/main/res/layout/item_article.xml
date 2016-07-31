@@ -18,14 +18,14 @@
       android:orientation="vertical"
       android:padding="10dp">
 
-    <ImageView
+    <com.codepath.nytnews.utils.DynamicHeightImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/image_background_width"
         android:layout_height="@dimen/image_background_width"
         android:layout_gravity="center_horizontal"
         android:layout_margin="5dp"
         android:scaleType="fitXY"
-        android:src="@drawable/new_york_time_placeholder"/>
+        tools:src="@drawable/new_york_time_placeholder"/>
 
     <TextView
         android:id="@+id/headlineTextView"
