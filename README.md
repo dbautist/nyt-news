@@ -49,17 +49,15 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+![New York TImes Walkthrough](nyt_news_demo.gif)
 
-## Notes
-
-Describe any challenges encountered while building the app.
 
 ## Open-source libraries used
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
 - [Parceler](http://parceler.org/) - Serializing Java objects between Contexts
-- 
+
 ## License
 
     Copyright [2016] [Dianne Bautista]
