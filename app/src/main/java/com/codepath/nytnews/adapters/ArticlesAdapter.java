@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.nytnews.R;
 import com.codepath.nytnews.databinding.ItemArticleBinding;
 import com.codepath.nytnews.databinding.ItemArticlePreviewBinding;
 import com.codepath.nytnews.models.Article;
 import com.codepath.nytnews.utils.view.DynamicHeightImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -78,12 +78,10 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         if (!TextUtils.isEmpty(article.thumbNail)) {
           articleViewHolder.imageView.setVisibility(View.VISIBLE);
           articleViewHolder.imageView.setImageResource(0);
-          articleViewHolder.imageView.setImageResource(R.drawable.new_york_time_placeholder);
 
-          int defaultDpWidth = (int) mContext.getResources().getDimension(R.dimen.image_background_width);
           articleViewHolder.imageView.setHeightRatio(1.0f);
-          Picasso.with(mContext).load(article.thumbNail).placeholder(R.drawable.loading_placeholder)
-              .resize(defaultDpWidth, 0)
+          Glide.with(mContext).load(article.thumbNail).placeholder(R.drawable.loading_placeholder)
+              .fitCenter().centerCrop()
               .into(articleViewHolder.imageView);
         } else {
           articleViewHolder.imageView.setVisibility(View.GONE);
