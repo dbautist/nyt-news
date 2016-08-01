@@ -28,6 +28,10 @@
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".activities.SearchActivity"/>
     </activity>
+
+    <meta-data android:name="com.codepath.nytnews.utils.view.GlideConfiguration"
+               android:value="GlideModule"/>
+
   </application>
 
 </manifest>
